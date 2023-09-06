@@ -1,0 +1,134 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "User API",
+        "description": "User API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000"
+        }
+    ],
+    "paths": {
+        "/api/users": {
+            "post": {
+                "description": "register new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "romzi": {
+                                    "description": "register user romzi",
+                                    "value": {
+                                        "username": "romzi",
+                                        "password": "password",
+                                        "name": "Romzi"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "username", "password"],
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "validation error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "validationerror": {
+                                        "description": "validation error",
+                                        "value": {
+                                            "errors": {
+                                                "username": [
+                                                    "username must not be blank",
+                                                    "username min 6 chart"
+                                                ],
+                                                "name": [
+                                                    "name must not be blank",
+                                                    "name min 6 chart"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "success register",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "success": "success register user",
+                                    "value": {
+                                        "data": {
+                                            "id": 1,
+                                            "name": "Romzi",
+                                            "username": "romzi"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "description": "login user"
+            }
+        },
+        "/api/users/current": {
+            "get": {
+                "description": "get current user"
+            },
+            "put": {
+                "description": "update current user"
+            }
+        },
+        "/api/users/logout": {
+            "delete": {
+                "description": "logout current user"
+            }
+        }
+    }
+}
