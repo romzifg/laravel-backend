@@ -30,13 +30,13 @@ class UserTest extends TestCase
     ->assertJson([
         "errors"  => [
             'username'  => [
-                "The username field is required"
+                "The username field is required.",
             ],
             'password'  => [
-                "The password field is required"
+                "The password field is required."
             ],
             'name'  => [
-                "The name field is required"
+                "The name field is required."
             ]
         ]
     ]);
