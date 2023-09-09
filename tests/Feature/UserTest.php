@@ -146,4 +146,66 @@ class UserTest extends TestCase
         ]
     ]);
   }
+
+  public function testUpdateNameSuccess() {
+    $this->seed([UserSeeder::class]);
+    $oldUser = User::where('username', 'test')->first();
+
+    $this->put('/api/users/current', 
+    [
+        'name'  => 'romzi'
+    ],
+    [
+        'Authorization' => 'test'
+    ],
+    )->assertStatus(200)
+    ->assertJson([
+        'data'  => [
+            'username'  => 'test',
+            'name'      => 'romzi'
+        ]
+    ]);
+
+    $newUser = User::where('username', 'test')->first();
+    self::assertNotEquals($oldUser->name, $newUser->name);
+  }
+
+  public function testUpdatePasswordSuccess() {
+    $this->seed([UserSeeder::class]);
+    $oldUser = User::where('username', 'test')->first();
+
+    $this->put('/api/users/current', 
+    [
+        'password'  => 'baru'
+    ],
+    [
+        'Authorization' => 'test'
+    ]
+    )->assertStatus(200)
+    ->assertJson([
+        'data'  => [
+            'username'  => 'test',
+            'name'      => 'test'
+        ]
+    ]);
+
+    $newUser = User::where('username', 'test')->first();
+    self::assertNotEquals($oldUser->password, $newUser->password);
+  }
+
+  public function testUpdateFailed() {
+    $this->seed([UserSeeder::class]);
+    $this->put('/api/users/current', 
+    [
+        'name'  => 'romzi'
+    ],
+    )->assertStatus(401)
+    ->assertJson([
+        'errors'  => [
+            'message'  => [
+                'Unauthorized'
+            ]
+        ]
+    ]);
+  }
 }
